@@ -15,5 +15,10 @@
   "autodoc.word.identifier": "Identifier",
   "autodoc.word.name": "Name",
   "autodoc.word.stats": "Stats",
-  "autodoc.word.loot_multi": "Loot Multiplier"
+  "autodoc.word.loot_multi": "Loot Multiplier",
+  "autodoc.word.loot": "Loot",
+  "autodoc.word.loot_table": "Loot Table",
+  "autodoc.word.loot_table_multi": "Loot Table Multiplier",
+  "autodoc.word.unique_stats": "Unique Stats",
+  "autodoc.word.rarity": "Rarity"
 }

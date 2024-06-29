@@ -1,19 +1,20 @@
-package io.github.lcs002.config;
+package io.github.lcs002.config.configs;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import io.github.lcs002.config.GeneratorConfig;
 import io.github.lcs002.data_attribute.StatAttribute;
 import io.github.lcs002.data_attribute.EntityAttribute;
 
 public class SpecificMobsGeneratorConfig extends GeneratorConfig {
     @JsonProperty("table_content")
-    public String[] tableContent;
+    public EntityAttribute[] tableContent;
     @JsonProperty("stat_content")
-    public String[] statContent;
+    public StatAttribute[] statContent;
 
     public SpecificMobsGeneratorConfig() {}
 
     public SpecificMobsGeneratorConfig(String fileName, String title, String description,
-                                       String[] tableContent, String[] statContent)
+                                       EntityAttribute[] tableContent, StatAttribute[] statContent)
     {
         super(fileName, title, description);
         this.description = description;
@@ -27,14 +28,14 @@ public class SpecificMobsGeneratorConfig extends GeneratorConfig {
                 "specific_mobs.md",
                 "Specific Mobs",
                 "This is the specific mobs page. Add custom markdown here.",
-                new String[] {
-                        EntityAttribute.IDENTIFIER.configName, EntityAttribute.HP_MULTI.configName,
-                        EntityAttribute.DMG_MULTI.configName, EntityAttribute.EXP_MULTI.configName,
-                        EntityAttribute.LOOT_MULTI.configName, EntityAttribute.STATS.configName
+                new EntityAttribute[] {
+                        EntityAttribute.IDENTIFIER, EntityAttribute.HP_MULTI,
+                        EntityAttribute.DMG_MULTI, EntityAttribute.EXP_MULTI,
+                        EntityAttribute.LOOT_MULTI, EntityAttribute.STATS
                 },
-                new String[] {
-                        StatAttribute.STAT.configName, StatAttribute.MIN.configName,
-                        StatAttribute.MAX.configName, StatAttribute.TYPE.configName,
+                new StatAttribute[] {
+                        StatAttribute.STAT, StatAttribute.MIN,
+                        StatAttribute.MAX, StatAttribute.TYPE,
                 }
         );
     }

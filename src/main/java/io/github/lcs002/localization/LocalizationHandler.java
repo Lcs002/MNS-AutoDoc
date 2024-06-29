@@ -33,27 +33,31 @@ public class LocalizationHandler {
 
         if (localized == null) {
             System.out.println("Localization for '" + localization.id + "' not found for entry '" + key + "' in family '" + family + "'.");
-            System.out.println("Defaulting to english localization.");
+            localized = key;
 
-            localizationData = LocalizationHandler.getMMORPGLocalization(Localization.EN_US);
-            for (String group : family.groups) {
-                if (localizationData.containsKey(group+"."+key)) {
-                    localized = localizationData.get(group+"."+key).toString();
-                }
-            }
+            if (localization != Localization.EN_US) {
+                System.out.println("Defaulting to english localization.");
 
-            if (localized == null) {
-                localizationData = LocalizationHandler.getGeneratorLocalization(Localization.EN_US);
+                localizationData = LocalizationHandler.getMMORPGLocalization(Localization.EN_US);
                 for (String group : family.groups) {
                     if (localizationData.containsKey(group+"."+key)) {
                         localized = localizationData.get(group+"."+key).toString();
                     }
                 }
-            }
 
-            if (localized == null) {
-                System.out.println("Localization for 'en_us' not found for entry '" + key + "' in family '" + family + "'.");
-                localized = key;
+                if (localized == null) {
+                    localizationData = LocalizationHandler.getGeneratorLocalization(Localization.EN_US);
+                    for (String group : family.groups) {
+                        if (localizationData.containsKey(group+"."+key)) {
+                            localized = localizationData.get(group+"."+key).toString();
+                        }
+                    }
+                }
+
+                if (localized == null) {
+                    System.out.println("Localization for 'en_us' not found for entry '" + key + "' in family '" + family + "'.");
+                    localized = key;
+                }
             }
         }
         return localized;
