@@ -90,7 +90,7 @@ public class SpecificMobsGenerator extends ResourceGenerator<SpecificMobsGenerat
 
     private String getStats(SpecialMobStats stats) {
         StringBuilder stringBuilder = new StringBuilder();
-       List<StatMod> statsList = stats.stats;
+        List<StatMod> statsList = stats.stats;
         for (StatMod stat : statsList) {
             for (StatMod.Attribute statContent : genConfig.statContent) {
                 switch (statContent) {
