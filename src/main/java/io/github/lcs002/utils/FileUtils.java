@@ -55,18 +55,16 @@ public class FileUtils {
         return genConfigSerialized;
     }
 
-    public static String[] getJsonFilesFromDir(String dir) {
+    public static Path[] getJsonFilesFromDir(String dir) {
         try (Stream<Path> stream = Files.list(Paths.get(dir))) {
             return stream
                     .filter(Files::isRegularFile)
-                    .map(Path::getFileName)
-                    .map(Path::toString)
-                    .filter(s -> s.endsWith(".json"))
-                    .toArray(String[]::new);
+                    .filter(s -> s.toString().endsWith(".json"))
+                    .toArray(Path[]::new);
         }
         catch (IOException e) {
             System.out.println("Error while reading files from directory '" + dir + "'.\n" + e.getMessage());
-            return new String[0];
+            return new Path[0];
         }
     }
 }

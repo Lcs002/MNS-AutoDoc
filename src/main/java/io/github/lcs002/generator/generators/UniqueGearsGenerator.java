@@ -1,23 +1,25 @@
 package io.github.lcs002.generator.generators;
 
+import io.github.lcs002.config.Config;
 import io.github.lcs002.config.configs.UniqueGearsGeneratorConfig;
-import io.github.lcs002.data_attribute.UniqueGearAttribute;
+import io.github.lcs002.data.DataProvider;
+import io.github.lcs002.data.mmorpg.StatMod;
+import io.github.lcs002.data.mmorpg.UniqueGear;
 import io.github.lcs002.generator.ResourceGenerator;
 import io.github.lcs002.utils.MarkdownUtils;
 
 import java.util.ArrayList;
-import java.util.Map;
+import java.util.List;
 
-public class UniqueGearsGenerator extends ResourceGenerator<UniqueGearsGeneratorConfig> {
+public class UniqueGearsGenerator extends ResourceGenerator<UniqueGearsGeneratorConfig, UniqueGear> {
 
-    @Override
-    protected void setContentResource(StringBuilder content, String[] files) {
-        content.append(generateUniqueGears(files));
+    public UniqueGearsGenerator(Config config, DataProvider<UniqueGear> dataProvider) {
+        super(config, dataProvider);
     }
 
     @Override
-    protected String getDir() {
-        return "mmorpg/mmorpg_unique_gears";
+    protected void setContentBody(StringBuilder content) {
+        content.append(generateUniqueGears());
     }
 
     @Override
@@ -25,48 +27,69 @@ public class UniqueGearsGenerator extends ResourceGenerator<UniqueGearsGenerator
         return UniqueGearsGeneratorConfig.class;
     }
 
-    private String generateUniqueGears(String[] filesPath) {
+    private String generateUniqueGears() {
         String[] localizedHeaders = generateHeader();
-        String[][] localizedContent = generateContent(filesPath);
+        String[][] localizedContent = generateContent();
         return MarkdownUtils.table(localizedHeaders, localizedContent);
     }
 
     private String[] generateHeader() {
         String[] localizedHeaders = new String[genConfig.tableContent.length];
         for (int i = 0; i < genConfig.tableContent.length; i++) {
-            UniqueGearAttribute uniqueGearAttribute = genConfig.tableContent[i];
-            localizedHeaders[i] = uniqueGearAttribute.localizer.parseKey(config.localization);
+            UniqueGear.Attribute attribute = genConfig.tableContent[i];
+            localizedHeaders[i] = attribute.localizer.parseKey(config.localization);
         }
         return localizedHeaders;
     }
 
-    private String[][] generateContent(String[] filesPath) {
+    private String[][] generateContent() {
         ArrayList<String[]> uniqueGearsList = new ArrayList<>();
-        for (String filePath : filesPath) {
-            Map<String, Object> uniqueGear = loadResource(filePath);
-            if (uniqueGear.isEmpty() || uniqueGear.get(UniqueGearAttribute.GUID.configName) == null) continue;
-            uniqueGearsList.add(generateGear(uniqueGear));
+        for (UniqueGear gear : dataProvider.getData()) {
+            uniqueGearsList.add(generateGear(gear));
         }
         return uniqueGearsList.toArray(new String[0][0]);
     }
 
-    private String[] generateGear(Map<String, Object> gear) {
-        System.out.println("Generating gear: " + gear.get(UniqueGearAttribute.GUID.configName));
+    private String[] generateGear(UniqueGear gear) {
+        System.out.println("Generating gear: " + gear.guid);
 
         String[] gearData = new String[genConfig.tableContent.length];
         for (int i = 0; i < genConfig.tableContent.length; i++) {
-            UniqueGearAttribute uniqueGearAttribute = genConfig.tableContent[i];
-            if (uniqueGearAttribute == UniqueGearAttribute.UNIQUE_STATS) gearData[i] = generateStats(gear);
-            else gearData[i] = uniqueGearAttribute.localizer.parseValue(gear.get(uniqueGearAttribute.configName), config.localization).toString();
+            gearData[i] = String.valueOf(genConfig.tableContent[i].localizer.parseValue(
+                    switch (genConfig.tableContent[i]) {
+                        case UniqueGear.Attribute.BASE_GEAR -> gear.baseGear;
+                        case UniqueGear.Attribute.FLAVOR_TEXT -> gear.flavorText;
+                        case UniqueGear.Attribute.FORCE_ITEM_ID -> gear.forceItemId;
+                        case UniqueGear.Attribute.GUID -> gear.guid;
+                        case UniqueGear.Attribute.LEAGUE -> gear.league;
+                        case UniqueGear.Attribute.MIN_TIER -> gear.minTier;
+                        case UniqueGear.Attribute.RARITY -> gear.rarity;
+                        case UniqueGear.Attribute.REPLACES_NAME -> gear.replacesName;
+                        case UniqueGear.Attribute.RUNABLE -> gear.runable;
+                        case UniqueGear.Attribute.UNIQUE_STATS -> generateStats(gear.uniqueStats);
+                    },
+                    config.localization
+            ));
         }
+
         return gearData;
     }
 
-    private String generateStats(Map<String, Object> stats) {
+    private String generateStats(List<StatMod> stats) {
           StringBuilder statsString = new StringBuilder();
-          for (int i = 0; i < genConfig.statContent.length; i++) {
-              statsString.append(genConfig.statContent[i].localizer.parseValue(stats.get(genConfig.statContent[i].configName), config.localization));
-              statsString.append(" ");
+
+          for (StatMod stat : stats) {
+              for (int i = 0; i < genConfig.statContent.length; i++) {
+                  statsString.append(genConfig.statContent[i].localizer.parseValue(
+                          switch (genConfig.statContent[i]) {
+                              case StatMod.Attribute.STAT -> stat.stat;
+                              case StatMod.Attribute.MIN -> stat.min;
+                              case StatMod.Attribute.MAX -> stat.max;
+                              case StatMod.Attribute.TYPE -> stat.type;
+                          },
+                          config.localization
+                  ));
+              }
           }
           return statsString.toString();
     }

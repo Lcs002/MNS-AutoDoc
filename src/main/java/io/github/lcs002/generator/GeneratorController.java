@@ -2,6 +2,11 @@ package io.github.lcs002.generator;
 
 import io.github.lcs002.config.Config;
 import io.github.lcs002.config.ConfigController;
+import io.github.lcs002.data.providers.SpecificMobProvider;
+import io.github.lcs002.data.providers.UniqueGearProvider;
+import io.github.lcs002.generator.generators.MainGenerator;
+import io.github.lcs002.generator.generators.SpecificMobsGenerator;
+import io.github.lcs002.generator.generators.UniqueGearsGenerator;
 import org.reflections.Reflections;
 
 import java.util.ArrayList;
@@ -23,21 +28,10 @@ public class GeneratorController {
     private GeneratorController() {}
 
     public void init() {
-        instance = new GeneratorController();
-
-        instance.generators = new ArrayList<>();
-
-        Reflections reflections = new Reflections("io.github.lcs002.generator");
-        Set<Class<? extends Generator>> classes = reflections.getSubTypesOf(Generator.class);
-        for (Class<? extends Generator> generatorClass : classes) {
-            try {
-                Generator generator = generatorClass.getDeclaredConstructor().newInstance();
-                generator.init(ConfigController.getConfig());
-                instance.generators.add(generator);
-            } catch (Exception e) {
-                System.out.println("Error while creating generator instance: " + e.getMessage());
-            }
-        }
+        generators = new ArrayList<>();
+        generators.add(new MainGenerator(ConfigController.getConfig()));
+        generators.add(new SpecificMobsGenerator(ConfigController.getConfig(), new SpecificMobProvider()));
+        generators.add(new UniqueGearsGenerator(ConfigController.getConfig(), new UniqueGearProvider()));
     }
 
     public void generate() {

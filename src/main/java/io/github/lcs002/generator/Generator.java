@@ -1,6 +1,7 @@
 package io.github.lcs002.generator;
 
 import io.github.lcs002.config.Config;
+import io.github.lcs002.data.DataProvider;
 import io.github.lcs002.utils.MarkdownUtils;
 import io.github.lcs002.config.GeneratorConfig;
 import io.github.lcs002.utils.FileUtils;
@@ -13,7 +14,7 @@ public abstract class Generator<T extends GeneratorConfig> {
     protected Config config;
     protected T genConfig;
 
-    public void init(Config config) {
+    protected Generator(Config config) {
         this.config = config;
         genConfig = getGenConfig();
     }

@@ -1,26 +1,27 @@
 package io.github.lcs002.generator.generators;
 
+import io.github.lcs002.config.Config;
 import io.github.lcs002.config.ConfigController;
 import io.github.lcs002.config.configs.SpecificMobsGeneratorConfig;
-import io.github.lcs002.data_attribute.EntityAttribute;
-import io.github.lcs002.data_attribute.StatAttribute;
+import io.github.lcs002.data.DataProvider;
+import io.github.lcs002.data.mmorpg.EntityConfig;
+import io.github.lcs002.data.mmorpg.SpecialMobStats;
+import io.github.lcs002.data.mmorpg.StatMod;
 import io.github.lcs002.generator.ResourceGenerator;
 import io.github.lcs002.utils.MarkdownUtils;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
-public class SpecificMobsGenerator extends ResourceGenerator<SpecificMobsGeneratorConfig> {
+public class SpecificMobsGenerator extends ResourceGenerator<SpecificMobsGeneratorConfig, EntityConfig> {
 
-    @Override
-    protected void setContentResource(StringBuilder content, String[] files) {
-        content.append(generateMobs(files));
+    public SpecificMobsGenerator(Config config, DataProvider<EntityConfig> dataProvider) {
+        super(config, dataProvider);
     }
 
     @Override
-    protected String getDir() {
-        return "mmorpg/mmorpg_entity/specific_mobs";
+    protected void setContentBody(StringBuilder content) {
+        content.append(generateMobs());
     }
 
     @Override
@@ -28,13 +29,11 @@ public class SpecificMobsGenerator extends ResourceGenerator<SpecificMobsGenerat
         return SpecificMobsGeneratorConfig.class;
     }
 
-    private String generateMobs(String[] filesPath)
+    private String generateMobs()
     {
         ArrayList<String[]> mobsList = new ArrayList<>();
-        for (String filePath : filesPath) {
-            Map<String, Object> mob = loadResource(filePath);
-            if (mob.isEmpty() || mob.get(EntityAttribute.IDENTIFIER.configName) == null) continue;
-            mobsList.add(generateMob(mob));
+        for (EntityConfig entityConfig : dataProvider.getData()) {
+            mobsList.add(generateMob(entityConfig));
         }
 
         String[][] mobs = new String[mobsList.size()][genConfig.tableContent.length];
@@ -44,25 +43,32 @@ public class SpecificMobsGenerator extends ResourceGenerator<SpecificMobsGenerat
 
         String[] localizedHeaders = new String[genConfig.tableContent.length];
         for (int i = 0; i < genConfig.tableContent.length; i++) {
-            EntityAttribute entityAttributeFormat = genConfig.tableContent[i];
-            localizedHeaders[i] = entityAttributeFormat.localizer.parseKey(ConfigController.getConfig().localization);
+            EntityConfig.Attribute attributeFormat = genConfig.tableContent[i];
+            localizedHeaders[i] = attributeFormat.localizer.parseKey(ConfigController.getConfig().localization);
         }
 
         return MarkdownUtils.table(localizedHeaders, mobs);
     }
 
-    private String[] generateMob(Map<String, Object> mob) {
-        System.out.println("Generating mob: " + mob.get(EntityAttribute.IDENTIFIER.configName));
+    private String[] generateMob(EntityConfig entityConfig) {
+        System.out.println("Generating mob: " + entityConfig.identifier);
 
         String[] mobData = new String[genConfig.tableContent.length];
         for (int i = 0; i < genConfig.tableContent.length; i++) {
-            EntityAttribute entityAttributeFormat = genConfig.tableContent[i];
-            mobData[i] = switch (entityAttributeFormat) {
-                case null -> "N/A";
-                case IDENTIFIER -> identifierToName(String.valueOf(mob.get(entityAttributeFormat.configName)));
-                case STATS -> getStats((Map<String, Object>) mob.get(entityAttributeFormat.configName));
-                default -> String.valueOf(mob.get(entityAttributeFormat.configName));
-            };
+            EntityConfig.Attribute attributeFormat = genConfig.tableContent[i];
+            mobData[i] = String.valueOf(switch (attributeFormat) {
+                case EntityConfig.Attribute.IDENTIFIER -> identifierToName(String.valueOf(entityConfig.identifier));
+                case EntityConfig.Attribute.DMG_MULTI -> entityConfig.dmgMulti;
+                case EntityConfig.Attribute.HP_MULTI -> entityConfig.hpMulti;
+                case EntityConfig.Attribute.MAX_LVL -> entityConfig.maxLvl;
+                case EntityConfig.Attribute.MIN_LVL -> entityConfig.minLvl;
+                case EntityConfig.Attribute.LOOT_MULTI -> entityConfig.lootMulti;
+                case EntityConfig.Attribute.EXP_MULTI -> entityConfig.exp_multi;
+                case EntityConfig.Attribute.SET_HEALTH_DAMAGE_OVERRIDE -> entityConfig.setHealthDamageOverride;
+                case EntityConfig.Attribute.SET_RAR -> entityConfig.setRar;
+                case EntityConfig.Attribute.STAT_MULTI -> entityConfig.statMulti;
+                case EntityConfig.Attribute.STATS -> getStats(entityConfig.stats);
+            });
         }
 
         return mobData;
@@ -82,26 +88,26 @@ public class SpecificMobsGenerator extends ResourceGenerator<SpecificMobsGenerat
         return new String(nameChars);
     }
 
-    private String getStats(Map<String, Object> stats) {
+    private String getStats(SpecialMobStats stats) {
         StringBuilder stringBuilder = new StringBuilder();
-        List<Map<String, Object>> statsList = (List<Map<String, Object>>) stats.get(EntityAttribute.STATS.configName);
-        for (Map<String, Object> stat : statsList) {
-            for (StatAttribute statContent : genConfig.statContent) {
+       List<StatMod> statsList = stats.stats;
+        for (StatMod stat : statsList) {
+            for (StatMod.Attribute statContent : genConfig.statContent) {
                 switch (statContent) {
                     case STAT:
-                        stringBuilder.append(MarkdownUtils.bold(StatAttribute.STAT.localizer.parseValue(stat.get(StatAttribute.STAT.configName).toString(), ConfigController.getConfig().localization).toString()));
+                        stringBuilder.append(MarkdownUtils.bold(StatMod.Attribute.STAT.localizer.parseValue(stat.stat, ConfigController.getConfig().localization).toString()));
                         stringBuilder.append(" ");
                         break;
                     case TYPE:
-                        stringBuilder.append(stat.get(StatAttribute.TYPE.configName).toString().toUpperCase());
+                        stringBuilder.append(stat.type.toUpperCase());
                         break;
                     case MIN:
-                        stringBuilder.append(MarkdownUtils.italic(StatAttribute.MIN.localizer.parseValue(stat.get(StatAttribute.MIN.configName).toString(), ConfigController.getConfig().localization).toString()));
+                        stringBuilder.append(MarkdownUtils.italic(StatMod.Attribute.MIN.localizer.parseValue(stat.min, ConfigController.getConfig().localization).toString()));
                         break;
                     case MAX:
-                        if (!stat.get(StatAttribute.MIN.configName).equals(stat.get(StatAttribute.MAX.configName))) {
+                        if (stat.min != (stat.max)) {
                             stringBuilder.append(MarkdownUtils.italic(" to "));
-                            stringBuilder.append(MarkdownUtils.italic(StatAttribute.MAX.localizer.parseValue(stat.get(StatAttribute.MAX.configName).toString(), ConfigController.getConfig().localization).toString()));
+                            stringBuilder.append(MarkdownUtils.italic(StatMod.Attribute.MAX.localizer.parseValue(stat.max, ConfigController.getConfig().localization).toString()));
                         }
                         stringBuilder.append(" ");
                         break;
