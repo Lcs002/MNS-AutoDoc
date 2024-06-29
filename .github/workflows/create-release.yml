@@ -1,0 +1,30 @@
+name: Create Release
+
+on:
+  push:
+    branches: [ release ]
+
+jobs:
+  build_and_release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      # Get the latest commit message
+      - name: Get commit message
+        run: echo "::set-output name=MESSAGE::$(git log -1 --pretty=%B)"
+        id: get_message
+
+      # Extract version information (assuming version is in the commit message)
+      - name: Extract Version
+        run: echo "v$(echo ${{ steps.get_message.outputs.MESSAGE }} | grep -o '[0-9]\+\.[0-9]\+\.[0-9]\+')"
+        id: extract_version
+
+      # Create a release using the extracted version
+      - uses: actions/create-release@v1
+        with:
+          tag_name: ${{ steps.extract_version.outputs.VERSION }}
+          release_name: "Release ${{ steps.extract_version.outputs.VERSION }}"
+          body: ${{ steps.get_message.outputs.MESSAGE }}
+          draft: false  # Set to true for draft releases
+          prerelease: false  # Set to true for pre-release versions
