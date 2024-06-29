@@ -1,6 +1,6 @@
-package io.github.lcs002.config;
+package io.github.lcs002.config.configs;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
+import io.github.lcs002.config.GeneratorConfig;
 
 public class MainGeneratorConfig extends GeneratorConfig {
     public MainGeneratorConfig() {}

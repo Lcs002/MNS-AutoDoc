@@ -33,13 +33,13 @@ public class AttributeLocalizer {
         return new Pair<>(localizedKey, localizedValue);
     }
 
-    private String localizeKey(String key, Localization localization) {
+    protected String localizeKey(String key, Localization localization) {
         String localizedKey = LocalizationHandler.localizationFor(key, keyLocalizationGroup, localization);
         if (localizedKey == null) localizedKey = key;
         return localizedKey;
     }
 
-    private Object localizeValue(Object value, Localization localization) {
+    protected Object localizeValue(Object value, Localization localization) {
         return LocalizationHandler.localizationFor(value.toString(), valueLocalizationGroup, localization);
     }
 }

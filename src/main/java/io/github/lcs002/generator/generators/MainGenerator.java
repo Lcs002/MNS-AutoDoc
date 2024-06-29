@@ -1,8 +1,7 @@
-package io.github.lcs002.generator;
+package io.github.lcs002.generator.generators;
 
-import io.github.lcs002.config.ConfigController;
-import io.github.lcs002.utils.MarkdownUtils;
-import io.github.lcs002.config.MainGeneratorConfig;
+import io.github.lcs002.generator.Generator;
+import io.github.lcs002.config.configs.MainGeneratorConfig;
 
 public class MainGenerator extends Generator<MainGeneratorConfig> {
 

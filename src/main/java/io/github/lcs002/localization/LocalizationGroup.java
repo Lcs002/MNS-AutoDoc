@@ -11,6 +11,9 @@ public enum LocalizationGroup {
     GEAR_SLOTS(List.of(
             "mmorpg.gear_slot"
     )),
+    GEAR_TYPES(List.of(
+            "mmorpg.gear_type"
+    )),
     UNIQUE_GEAR(List.of(
             "mmorpg.unique_gear"
     )),
@@ -35,6 +38,9 @@ public enum LocalizationGroup {
     )),
     AURA(List.of(
             "mmorpg.aura"
+    )),
+    LEAGUE(List.of(
+            "mmorpg.league"
     )),
     ;
     LocalizationGroup(List<String> groups) {
