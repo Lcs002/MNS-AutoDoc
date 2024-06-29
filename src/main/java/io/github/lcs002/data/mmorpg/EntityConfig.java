@@ -68,29 +68,4 @@ public class EntityConfig {
         private static final String STATS = "stats";
         private static final String SET_HEALTH_DAMAGE_OVERRIDE = "set_health_damage_override";
     }
-
-    public static void main(String[] args) {
-        // generate json and print
-        EntityConfig entityConfig = new EntityConfig();
-
-        entityConfig.setHealthDamageOverride = true;
-        entityConfig.identifier = "identifier";
-        entityConfig.setRar = "set_rar";
-        entityConfig.lootMulti = 1.0;
-        entityConfig.exp_multi = 1.0;
-        entityConfig.minLvl = 1;
-        entityConfig.maxLvl = 1;
-        entityConfig.dmgMulti = 1.0;
-        entityConfig.hpMulti = 1.0;
-        entityConfig.statMulti = 1.0;
-        entityConfig.stats = new SpecialMobStats();
-        entityConfig.stats.stats.add(new StatMod(1.0f, 1.0f, "stat", "type"));
-        entityConfig.stats.stats.add(new StatMod(1.0f, 1.0f, "stat", "type"));
-
-        try {
-            System.out.println(new ObjectMapper().writerWithDefaultPrettyPrinter().writeValueAsString(entityConfig));
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
-        }
-    }
 }
