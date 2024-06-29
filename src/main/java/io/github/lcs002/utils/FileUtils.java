@@ -9,6 +9,19 @@ import java.nio.file.Paths;
 import java.util.stream.Stream;
 
 public class FileUtils {
+
+    public static boolean exists(String path) {
+        return new File(path).exists();
+    }
+
+    public static void createDir(String dirPath) {
+        File dir = new File(dirPath);
+        if (!dir.exists()) {
+            if (dir.mkdirs()) System.out.println("Directory created: " + dir.getName());
+            else System.out.println("Failed to create directory: " + dir.getName());
+        }
+    }
+
     public static File createFile(String filePath) {
         File file = new File(filePath);
         try {

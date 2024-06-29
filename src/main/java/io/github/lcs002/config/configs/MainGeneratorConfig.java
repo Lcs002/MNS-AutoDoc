@@ -13,7 +13,7 @@ public class MainGeneratorConfig extends GeneratorConfig {
     @Override
     public MainGeneratorConfig createDefault() {
         return new MainGeneratorConfig(
-                "main.md",
+                "mns-autodoc.md",
                 "Main Page",
                 "This is the main page. Add custom markdown here."
         );
