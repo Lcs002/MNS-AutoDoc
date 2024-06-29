@@ -1,0 +1,19 @@
+{
+  "autodoc.word.armor": "Armor",
+  "autodoc.word.flat": "Flat",
+  "autodoc.word.type": "Type",
+  "autodoc.word.exp_multi": "Exp Multiplier",
+  "autodoc.word.exp": "Experience",
+  "autodoc.word.level": "Level",
+  "autodoc.word.hp": "Health Points",
+  "autodoc.word.hp_multi": "HP Multiplier",
+  "autodoc.word.hp_regen": "HP Regeneration",
+  "autodoc.word.min_lvl": "Minimum Level",
+  "autodoc.word.max_lvl": "Maximum Level",
+  "autodoc.word.dmg": "Damage",
+  "autodoc.word.dmg_multi": "Damage Multiplier",
+  "autodoc.word.identifier": "Identifier",
+  "autodoc.word.name": "Name",
+  "autodoc.word.stats": "Stats",
+  "autodoc.word.loot_multi": "Loot Multiplier"
+}
