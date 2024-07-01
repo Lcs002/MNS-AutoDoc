@@ -1,6 +1,7 @@
 package io.github.lcs002.config;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.github.lcs002.config.configs.MainGeneratorConfig;
 import io.github.lcs002.config.configs.SpecificMobsGeneratorConfig;
 import io.github.lcs002.config.configs.UniqueGearsGeneratorConfig;
@@ -21,6 +22,19 @@ public class Config {
     public UniqueGearsGeneratorConfig uniqueGearsGeneratorConfig;
 
     public Config() {}
+
+    public static Config fromJson(String json) {
+        Config config;
+        try {
+            config = new ObjectMapper().readValue(json, Config.class);
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to parse config from json", e);
+        }
+        config.mainGeneratorConfig.globalConfig = config;
+        config.specificMobsGeneratorConfig.globalConfig = config;
+        config.uniqueGearsGeneratorConfig.globalConfig = config;
+        return config;
+    }
 
 
     public static Config createDefaultConfig()

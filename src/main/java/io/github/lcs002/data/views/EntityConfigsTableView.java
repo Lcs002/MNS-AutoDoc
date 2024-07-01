@@ -1,22 +1,19 @@
 package io.github.lcs002.data.views;
 
-import io.github.lcs002.config.ConfigController;
 import io.github.lcs002.data.model.EntityConfig;
-import io.github.lcs002.data.model.components.SpecialMobStats;
 import io.github.lcs002.data.model.components.StatMod;
 import io.github.lcs002.localization.Localization;
 import io.github.lcs002.utils.MarkdownUtils;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class EntityConfigsTableView implements DataView<EntityConfig[]>{
     private final String[] tableContent;
-    private final StatMod.Attribute[] statContent;
+    private final DataView<StatMod[]> statModsView;
 
-    public EntityConfigsTableView(String[] tableContent, StatMod.Attribute[] statContent) {
+    public EntityConfigsTableView(String[] tableContent, DataView<StatMod[]> statModsView) {
         this.tableContent = tableContent;
-        this.statContent = statContent;
+        this.statModsView = statModsView;
     }
 
     @Override
@@ -47,7 +44,7 @@ public class EntityConfigsTableView implements DataView<EntityConfig[]>{
             mobData[i] = String.valueOf(
                     switch (tableContent[i]) {
                         case EntityConfig.Attributes.IDENTIFIER -> identifierToName(String.valueOf(entityConfig.identifier));
-                        case EntityConfig.Attributes.STATS -> getStats(entityConfig.stats);
+                        case EntityConfig.Attributes.STATS -> statModsView.show(entityConfig.stats.stats.toArray(new StatMod[0]), localization);
                         default -> entityConfig.localizeValue(tableContent[i], localization);
             });
         }
@@ -67,37 +64,5 @@ public class EntityConfigsTableView implements DataView<EntityConfig[]>{
 
         }
         return new String(nameChars);
-    }
-
-    private String getStats(SpecialMobStats stats) {
-        StringBuilder stringBuilder = new StringBuilder();
-        List<StatMod> statsList = stats.stats;
-        for (StatMod stat : statsList) {
-            for (StatMod.Attribute statContent : statContent) {
-                switch (statContent) {
-                    case STAT:
-                        stringBuilder.append(MarkdownUtils.bold(StatMod.Attribute.STAT.localizer.parseValue(stat.stat, ConfigController.getConfig().localization).toString()));
-                        stringBuilder.append(" ");
-                        break;
-                    case TYPE:
-                        stringBuilder.append(stat.type.toUpperCase());
-                        break;
-                    case MIN:
-                        stringBuilder.append(MarkdownUtils.italic(StatMod.Attribute.MIN.localizer.parseValue(stat.min, ConfigController.getConfig().localization).toString()));
-                        break;
-                    case MAX:
-                        if (statsList.contains(stat.min) && stat.min != (stat.max)) {
-                            stringBuilder.append(MarkdownUtils.italic(" to "));
-                            stringBuilder.append(MarkdownUtils.italic(StatMod.Attribute.MAX.localizer.parseValue(stat.max, ConfigController.getConfig().localization).toString()));
-                        }
-                        stringBuilder.append(" ");
-                        break;
-                    case null:
-                        break;
-                }
-            }
-            stringBuilder.append("<br>");
-        }
-        return stringBuilder.toString();
     }
 }

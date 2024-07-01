@@ -20,5 +20,6 @@
   "autodoc.word.loot_table": "Loot Table",
   "autodoc.word.loot_table_multi": "Loot Table Multiplier",
   "autodoc.word.unique_stats": "Unique Stats",
-  "autodoc.word.rarity": "Rarity"
+  "autodoc.word.rarity": "Rarity",
+  "autodoc.word.base_gear": "Base Gear"
 }

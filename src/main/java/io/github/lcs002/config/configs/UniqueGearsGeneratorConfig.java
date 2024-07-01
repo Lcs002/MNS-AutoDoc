@@ -11,12 +11,12 @@ public class UniqueGearsGeneratorConfig extends ResourceGeneratorConfig<UniqueGe
     @JsonProperty("table_content")
     public String[] tableContent;
     @JsonProperty("stat_content")
-    public StatMod.Attribute[] statContent;
+    public String[] statContent;
 
     public UniqueGearsGeneratorConfig() {}
 
     public UniqueGearsGeneratorConfig(String fileName, String title, String description, Config config,
-                                      String[] tableContent, StatMod.Attribute[] statContent) {
+                                      String[] tableContent, String[] statContent) {
         super(fileName, title, description, config);
         this.tableContent = tableContent;
         this.statContent = statContent;
@@ -30,10 +30,10 @@ public class UniqueGearsGeneratorConfig extends ResourceGeneratorConfig<UniqueGe
                 "This is the unique items page. Add custom markdown here.",
                 config,
                 new String[] {
-                        UniqueGear.Attributes.GUID, UniqueGear.Attributes.RARITY, UniqueGear.Attributes.BASE_GEAR
+                        UniqueGear.Attributes.GUID, UniqueGear.Attributes.RARITY, UniqueGear.Attributes.BASE_GEAR, UniqueGear.Attributes.UNIQUE_STATS
                 },
-                new StatMod.Attribute[] {
-                        StatMod.Attribute.STAT, StatMod.Attribute.MIN, StatMod.Attribute.MAX, StatMod.Attribute.TYPE
+                new String[] {
+                        StatMod.Attributes.STAT, StatMod.Attributes.MIN, StatMod.Attributes.MAX, StatMod.Attributes.TYPE
                 }
         );
     }

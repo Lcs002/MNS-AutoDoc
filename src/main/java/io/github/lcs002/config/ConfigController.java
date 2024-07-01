@@ -30,7 +30,7 @@ public class ConfigController {
         if (configFile.exists() && !configFile.isDirectory()) {
             System.out.println("Config file found.");
             String serializedConfig = FileUtils.readConfigFile(configFile.getPath());
-            loadConfig(serializedConfig);
+            config = Config.fromJson(serializedConfig);
         }
         else {
             System.out.println("Config file not found, creating a new one.");
@@ -59,14 +59,5 @@ public class ConfigController {
             e.printStackTrace();
         }
         return genConfigSerialized;
-    }
-
-    private void loadConfig(String serializedConfig) {
-        try {
-            config = new ObjectMapper().readValue(serializedConfig, Config.class);
-        }
-        catch (Exception e) {
-            e.printStackTrace();
-        }
     }
 }

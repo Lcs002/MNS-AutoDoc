@@ -6,15 +6,14 @@ import io.github.lcs002.localization.Localization;
 import io.github.lcs002.utils.MarkdownUtils;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class UniqueGearsTableView implements DataView<UniqueGear[]> {
     private final String[] tableContent;
-    private final StatMod.Attribute[] statContent;
+    private final DataView<StatMod[]> statModsView;
 
-    public UniqueGearsTableView(String[] tableContent, StatMod.Attribute[] statContent) {
+    public UniqueGearsTableView(String[] tableContent, DataView<StatMod[]> statModsView) {
         this.tableContent = tableContent;
-        this.statContent = statContent;
+        this.statModsView = statModsView;
     }
 
     @Override
@@ -47,31 +46,12 @@ public class UniqueGearsTableView implements DataView<UniqueGear[]> {
         for (int i = 0; i < tableContent.length; i++) {
             gearData[i] = String.valueOf(
                     switch (tableContent[i]) {
-                        case UniqueGear.Attributes.UNIQUE_STATS -> generateStats(gear.unique_stats, localization);
+                        case UniqueGear.Attributes.UNIQUE_STATS -> statModsView.show(gear.unique_stats.toArray(new StatMod[0]), localization);
                         default -> gear.localizeValue(tableContent[i], localization);
                     }
             );
         }
 
         return gearData;
-    }
-
-    private String generateStats(List<StatMod> stats, Localization localization) {
-        StringBuilder statsString = new StringBuilder();
-
-        for (StatMod stat : stats) {
-            for (int i = 0; i < statContent.length; i++) {
-                statsString.append(statContent[i].localizer.parseValue(
-                        switch (statContent[i]) {
-                            case StatMod.Attribute.STAT -> stat.stat;
-                            case StatMod.Attribute.MIN -> stat.min;
-                            case StatMod.Attribute.MAX -> stat.max;
-                            case StatMod.Attribute.TYPE -> stat.type;
-                        },
-                        localization
-                ));
-            }
-        }
-        return statsString.toString();
     }
 }

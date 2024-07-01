@@ -17,7 +17,7 @@ import java.util.Map;
 
 public class UniqueGear implements Data, LocatableData {
     @JsonIgnore
-    public static final Map<String, AttributeLocalizer> attributes = Map.of(
+    private static final Map<String, AttributeLocalizer> attributes = Map.of(
             Attributes.BASE_GEAR, new AttributeLocalizer(Attributes.BASE_GEAR, LocalizationGroup.WORDS, LocalizationGroup.GEAR_TYPES),
             Attributes.FLAVOR_TEXT, new AttributeLocalizer(Attributes.FLAVOR_TEXT, LocalizationGroup.WORDS, LocalizationGroup.NONE),
             Attributes.FORCE_ITEM_ID, new AttributeLocalizer(Attributes.FORCE_ITEM_ID, LocalizationGroup.WORDS, LocalizationGroup.NONE),
@@ -112,5 +112,6 @@ public class UniqueGear implements Data, LocatableData {
         public static final String RUNABLE = "runable";
         public static final String UNIQUE_STATS = "unique_stats";
         public static final String WEIGHT = "weight";
+        private Attributes() {}
     }
 }

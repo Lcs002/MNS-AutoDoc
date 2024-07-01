@@ -101,5 +101,6 @@ public class EntityConfig implements Data, LocatableData {
         public static final String STAT_MULTI = "stat_multi";
         public static final String STATS = "stats";
         public static final String SET_HEALTH_DAMAGE_OVERRIDE = "set_health_damage_override";
+        private Attributes() {}
     }
 }

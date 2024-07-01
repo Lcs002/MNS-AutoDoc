@@ -10,12 +10,12 @@ public class SpecificMobsGeneratorConfig extends ResourceGeneratorConfig<EntityC
     @JsonProperty("table_content")
     public String[] tableContent;
     @JsonProperty("stat_content")
-    public StatMod.Attribute[] statContent;
+    public String[] statContent;
 
     public SpecificMobsGeneratorConfig() {}
 
     public SpecificMobsGeneratorConfig(String fileName, String title, String description,
-                                       Config config, StatMod.Attribute[] statContent, String[] tableContent)
+                                       Config config, String[] statContent, String[] tableContent)
     {
         super(fileName, title, description, config);
         this.tableContent = tableContent;
@@ -29,9 +29,9 @@ public class SpecificMobsGeneratorConfig extends ResourceGeneratorConfig<EntityC
                 "Specific Mobs",
                 "This is the specific mobs page. Add custom markdown here.",
                 config,
-                new StatMod.Attribute[] {
-                        StatMod.Attribute.STAT, StatMod.Attribute.MIN,
-                        StatMod.Attribute.MAX, StatMod.Attribute.TYPE,
+                new String[] {
+                        StatMod.Attributes.STAT, StatMod.Attributes.MIN,
+                        StatMod.Attributes.MAX, StatMod.Attributes.TYPE,
                 }, new String[] {
                         EntityConfig.Attributes.IDENTIFIER, EntityConfig.Attributes.HP_MULTI,
                         EntityConfig.Attributes.DMG_MULTI, EntityConfig.Attributes.EXP_MULTI,
