@@ -4,7 +4,7 @@
 
   <groupId>io.github.lcs002</groupId>
   <artifactId>MineAndSlash_Config_Auto-Documentation</artifactId>
-  <version>0.1.0</version>
+  <version>0.2.0</version>
   <packaging>jar</packaging>
 
   <name>MineAndSlash_Config_Auto-Documentation</name>
