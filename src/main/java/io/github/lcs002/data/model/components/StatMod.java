@@ -1,4 +1,4 @@
-package io.github.lcs002.data.mmorpg;
+package io.github.lcs002.data.model.components;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonRootName;

@@ -1,19 +1,22 @@
 package io.github.lcs002.generator;
 
-import io.github.lcs002.config.Config;
-import io.github.lcs002.config.ConfigController;
 import io.github.lcs002.config.GeneratorConfig;
-import io.github.lcs002.data.DataProvider;
-import io.github.lcs002.utils.FileUtils;
-import io.github.lcs002.utils.JsonUtils;
+import io.github.lcs002.config.ResourceGeneratorConfig;
+import io.github.lcs002.data.providers.DataProvider;
+import io.github.lcs002.data.views.DataView;
 
-import java.util.Map;
-
-public abstract class ResourceGenerator<T extends GeneratorConfig, K> extends Generator<T>{
+public class ResourceGenerator<T extends ResourceGeneratorConfig<K>, K> extends Generator<T>{
     protected DataProvider<K> dataProvider;
+    protected DataView<K[]> view;
 
-    protected ResourceGenerator(Config config, DataProvider<K> dataProvider) {
+    protected ResourceGenerator(T config, DataProvider<K> dataProvider, DataView<K[]> view) {
         super(config);
         this.dataProvider = dataProvider;
+        this.view = view;
+    }
+
+    @Override
+    protected void setContentBody(StringBuilder content) {
+        content.append(view.show(dataProvider.getData(), generatorConfig.globalConfig.localization));
     }
 }

@@ -1,9 +1,7 @@
 package io.github.lcs002.data.providers;
 
 import io.github.lcs002.config.ConfigController;
-import io.github.lcs002.data.DataProvider;
-import io.github.lcs002.data.mmorpg.EntityConfig;
-import io.github.lcs002.data.mmorpg.UniqueGear;
+import io.github.lcs002.data.model.UniqueGear;
 import io.github.lcs002.utils.FileUtils;
 
 import java.nio.file.Files;

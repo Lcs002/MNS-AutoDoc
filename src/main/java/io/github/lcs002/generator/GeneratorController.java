@@ -1,17 +1,13 @@
 package io.github.lcs002.generator;
 
-import io.github.lcs002.config.Config;
 import io.github.lcs002.config.ConfigController;
 import io.github.lcs002.data.providers.SpecificMobProvider;
 import io.github.lcs002.data.providers.UniqueGearProvider;
-import io.github.lcs002.generator.generators.MainGenerator;
-import io.github.lcs002.generator.generators.SpecificMobsGenerator;
-import io.github.lcs002.generator.generators.UniqueGearsGenerator;
-import org.reflections.Reflections;
+import io.github.lcs002.data.views.EntityConfigsTableView;
+import io.github.lcs002.data.views.UniqueGearsTableView;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 public class GeneratorController {
     private static GeneratorController instance;
@@ -29,9 +25,23 @@ public class GeneratorController {
 
     public void init() {
         generators = new ArrayList<>();
-        generators.add(new MainGenerator(ConfigController.getConfig()));
-        generators.add(new SpecificMobsGenerator(ConfigController.getConfig(), new SpecificMobProvider()));
-        generators.add(new UniqueGearsGenerator(ConfigController.getConfig(), new UniqueGearProvider()));
+        generators.add(new Generator<>(ConfigController.getConfig().mainGeneratorConfig));
+        generators.add(new ResourceGenerator<>(
+                ConfigController.getConfig().specificMobsGeneratorConfig,
+                new SpecificMobProvider(),
+                new EntityConfigsTableView(
+                        ConfigController.getConfig().specificMobsGeneratorConfig.tableContent,
+                        ConfigController.getConfig().specificMobsGeneratorConfig.statContent
+                )
+        ));
+        generators.add(new ResourceGenerator<>(
+                ConfigController.getConfig().uniqueGearsGeneratorConfig,
+                new UniqueGearProvider(),
+                new UniqueGearsTableView(
+                        ConfigController.getConfig().uniqueGearsGeneratorConfig.tableContent,
+                        ConfigController.getConfig().uniqueGearsGeneratorConfig.statContent
+                )
+        ));
     }
 
     public void generate() {

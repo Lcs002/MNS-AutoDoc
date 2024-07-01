@@ -34,7 +34,7 @@ public class ConfigController {
         }
         else {
             System.out.println("Config file not found, creating a new one.");
-            createDefaultConfigs();
+            config = Config.createDefaultConfig();
             String serializedConfig = serializeConfig(config);
             FileUtils.createFile(configFile.getPath());
             FileUtils.writeToFile(configFile.getPath(), serializedConfig);
@@ -59,23 +59,6 @@ public class ConfigController {
             e.printStackTrace();
         }
         return genConfigSerialized;
-    }
-
-    private void createDefaultConfigs() {
-        Reflections reflections = new Reflections("io.github.lcs002.config");
-
-        GeneratorConfigList configs = new GeneratorConfigList();
-        for (Class<? extends GeneratorConfig> configClass : reflections.getSubTypesOf(GeneratorConfig.class)) {
-            try {
-                GeneratorConfig config = configClass.getDeclaredConstructor().newInstance();
-                configs.add(config.createDefault());
-            } catch (Exception e) {
-                System.out.println("Error while creating config instance: " + e.getMessage());
-            }
-        }
-
-        config = new Config().createDefault();
-        config.configs = configs;
     }
 
     private void loadConfig(String serializedConfig) {
