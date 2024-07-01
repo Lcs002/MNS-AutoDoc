@@ -20,6 +20,7 @@ public class TableView<T extends Data & LocatableData<T>> implements DataView<T[
 
     @Override
     public String show(T[] data, Localization localization) {
+        if (data.length == 0) return "No data available.";
         String[] tableHeaders = generateHeaders(data[0], localization);
         String[][] tableData = generateData(data, localization);
         return MarkdownUtils.table(tableHeaders, tableData);
@@ -63,7 +64,7 @@ public class TableView<T extends Data & LocatableData<T>> implements DataView<T[
             }
             if (!excluded) tableData.add(rowData);
         }
-        Printer.printMisc("");
+        Printer.printMisc("\n");
         return tableData.toArray(new String[0][0]);
     }
 

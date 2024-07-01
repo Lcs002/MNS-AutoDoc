@@ -1,5 +1,7 @@
 package io.github.lcs002.utils;
 
+import org.jline.jansi.Ansi;
+
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -63,7 +65,7 @@ public class FileUtils {
                     .toArray(Path[]::new);
         }
         catch (IOException e) {
-            Printer.print("Error while reading files from directory '" + dir + "'.\n" + e.getMessage());
+            Printer.print(Ansi.ansi().fgBrightYellow().a("Could not find directory '" + dir + "'.\n").reset().toString());
             return new Path[0];
         }
     }

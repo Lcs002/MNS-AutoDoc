@@ -2,6 +2,7 @@ package io.github.lcs002.utils;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.jline.jansi.Ansi;
 
 import java.io.File;
 import java.io.IOException;
@@ -17,7 +18,7 @@ public class JsonUtils {
             return objectMapper.readValue(content, typeRef);
         }
         catch (IOException e) {
-            Printer.printDebug("Error while reading content: \n " + content + "\n" + e.getMessage());
+            Printer.printDebug(Ansi.ansi().fgBrightYellow().a("Error while reading content: \n " + content + "\n" + e.getMessage()).reset().toString());
             return new HashMap<>();
         }
     }

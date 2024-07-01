@@ -73,5 +73,8 @@ public class GeneratorController {
             generator.generate();
         }
         Printer.print(Ansi.ansi().fgBrightGreen().a("\nGeneration completed.").reset().toString());
+        Printer.print("Generated files can be found in " + Ansi.ansi().fgBrightGreen().a(
+                ConfigController.getConfig().outDir + "/mns_autodoc_generated"
+        ).reset().toString());
     }
 }
