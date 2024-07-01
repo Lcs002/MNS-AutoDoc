@@ -8,12 +8,12 @@ import io.github.lcs002.data.model.Entity;
 import io.github.lcs002.data.model.SupportGem;
 import io.github.lcs002.data.model.UniqueGear;
 import io.github.lcs002.data.providers.concrete.SpecificMobFromJsonProvider;
+import io.github.lcs002.data.providers.concrete.StatInfoFromJsonProvider;
 import io.github.lcs002.data.providers.concrete.SupportGemFromJsonProvider;
 import io.github.lcs002.data.providers.concrete.UniqueGearFromJsonProvider;
-import io.github.lcs002.data.view.concrete.EntityConfigsTableView;
-import io.github.lcs002.data.view.concrete.StatModsListedView;
-import io.github.lcs002.data.view.concrete.SupportGemsTableView;
-import io.github.lcs002.data.view.concrete.UniqueGearsTableView;
+import io.github.lcs002.data.view.concrete.*;
+import io.github.lcs002.utils.Printer;
+import org.jline.jansi.Ansi;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,7 +35,7 @@ public class GeneratorController {
     public void init() {
         generators = new ArrayList<>();
         generators.add(new Generator<>(ConfigController.getConfig().mainGeneratorConfig));
-        generators.add(new ResourceGenerator<SpecificMobsGeneratorConfig, Entity>(
+        generators.add(new ResourceGenerator<>(
                 ConfigController.getConfig().specificMobsGeneratorConfig,
                 new SpecificMobFromJsonProvider(ConfigController.getConfig().dataDir),
                 new EntityConfigsTableView(
@@ -43,7 +43,7 @@ public class GeneratorController {
                         new StatModsListedView(ConfigController.getConfig().specificMobsGeneratorConfig.stats)
                 )
         ));
-        generators.add(new ResourceGenerator<UniqueGearsGeneratorConfig, UniqueGear>(
+        generators.add(new ResourceGenerator<>(
                 ConfigController.getConfig().uniqueGearsGeneratorConfig,
                 new UniqueGearFromJsonProvider(ConfigController.getConfig().dataDir),
                 new UniqueGearsTableView(
@@ -51,7 +51,7 @@ public class GeneratorController {
                         new StatModsListedView(ConfigController.getConfig().uniqueGearsGeneratorConfig.stats)
                 )
         ));
-        generators.add(new ResourceGenerator<SupportGemGeneratorConfig, SupportGem>(
+        generators.add(new ResourceGenerator<>(
                 ConfigController.getConfig().supportGemsGeneratorConfig,
                 new SupportGemFromJsonProvider(ConfigController.getConfig().dataDir),
                 new SupportGemsTableView(
@@ -60,15 +60,18 @@ public class GeneratorController {
                 )
 
         ));
+        generators.add(new ResourceGenerator<>(
+                ConfigController.getConfig().statInfoGeneratorConfig,
+                new StatInfoFromJsonProvider(ConfigController.getConfig().dataDir),
+                new StatInfosTableView(ConfigController.getConfig().statInfoGeneratorConfig.attributes)
+        ));
     }
 
     public void generate() {
-        System.out.println("Starting generation...");
+        Printer.print("Starting generation...\n");
         for (Generator generator : generators) {
-            System.out.println("#".repeat(80));
             generator.generate();
         }
-        System.out.println("#".repeat(80));
-        System.out.println("Generation completed.");
+        Printer.print(Ansi.ansi().fgBrightGreen().a("\nGeneration completed.").reset().toString());
     }
 }

@@ -17,19 +17,19 @@ public class FileUtils {
     public static void createDir(String dirPath) {
         File dir = new File(dirPath);
         if (!dir.exists()) {
-            if (dir.mkdirs()) System.out.println("Directory created: " + dir.getName());
-            else System.out.println("Failed to create directory: " + dir.getName());
+            if (dir.mkdirs()) Printer.printDebug("Directory created: " + dir.getName());
+            else Printer.printDebug("Failed to create directory: " + dir.getName());
         }
     }
 
     public static File createFile(String filePath) {
         File file = new File(filePath);
         try {
-            if (file.createNewFile()) System.out.println("File created: " + file.getName());
-            else System.out.println("File already exists. Overwriting file: " + file.getName());
+            if (file.createNewFile()) Printer.printDebug("File created: " + file.getName());
+            else Printer.printDebug("File already exists. Overwriting file: " + file.getName());
         }
         catch (IOException e) {
-            System.out.println("Error while creating file '" + filePath + "'.\n" + e.getMessage());
+            Printer.print("Error while creating file '" + filePath + "'.\n" + e.getMessage());
             throw new RuntimeException(e);
         }
         return file;
@@ -40,7 +40,7 @@ public class FileUtils {
             writer.write(content);
         }
         catch (IOException e) {
-            System.out.println("Error while writing to file '" + file_path + "'.\n" + e.getMessage());
+            Printer.print("Error while writing to file '" + file_path + "'.\n" + e.getMessage());
         }
     }
 
@@ -63,7 +63,7 @@ public class FileUtils {
                     .toArray(Path[]::new);
         }
         catch (IOException e) {
-            System.out.println("Error while reading files from directory '" + dir + "'.\n" + e.getMessage());
+            Printer.print("Error while reading files from directory '" + dir + "'.\n" + e.getMessage());
             return new Path[0];
         }
     }

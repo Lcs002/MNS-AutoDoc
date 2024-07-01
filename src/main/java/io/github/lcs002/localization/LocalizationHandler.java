@@ -1,6 +1,7 @@
 package io.github.lcs002.localization;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import io.github.lcs002.utils.Printer;
 import io.github.lcs002.utils.ResourceUtils;
 import io.github.lcs002.utils.JsonUtils;
 
@@ -32,11 +33,11 @@ public class LocalizationHandler {
         }
 
         if (localized == null) {
-            System.out.println("Localization for '" + localization.id + "' not found for entry '" + key + "' in family '" + family + "'.");
+            Printer.printDebug("Localization for '" + localization.id + "' not found for entry '" + key + "' in family '" + family + "'.");
             localized = key;
 
             if (localization != Localization.EN_US) {
-                System.out.println("Defaulting to english localization.");
+                Printer.printDebug("Defaulting to english localization.");
 
                 localizationData = LocalizationHandler.getMMORPGLocalization(Localization.EN_US);
                 for (String group : family.groups) {
@@ -55,7 +56,7 @@ public class LocalizationHandler {
                 }
 
                 if (localized == null) {
-                    System.out.println("Localization for 'en_us' not found for entry '" + key + "' in family '" + family + "'.");
+                    Printer.printDebug("Localization for 'en_us' not found for entry '" + key + "' in family '" + family + "'.");
                     localized = key;
                 }
             }
@@ -71,8 +72,8 @@ public class LocalizationHandler {
             localizationContent = ResourceUtils.getResourceAsString(localizationPath);
         }
         catch (IOException e) {
-            System.out.println("Error while reading localization file '" + localizationPath + "'.\n" + e.getMessage());
-            return null;
+            Printer.print("Error while reading localization file '" + localizationPath + "'.\n" + e.getMessage());
+            throw new RuntimeException(e);
         }
 
         return JsonUtils.stringToMap(localizationContent);
@@ -86,8 +87,8 @@ public class LocalizationHandler {
             localizationContent = ResourceUtils.getResourceAsString(localizationPath);
         }
         catch (IOException e) {
-            System.out.println("Error while reading localization file '" + localizationPath + "'.\n" + e.getMessage());
-            return null;
+            Printer.print("Error while reading localization file '" + localizationPath + "'.\n" + e.getMessage());
+            throw new RuntimeException(e);
         }
 
         return JsonUtils.stringToMap(localizationContent);

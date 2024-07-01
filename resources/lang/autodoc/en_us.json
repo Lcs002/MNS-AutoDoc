@@ -12,6 +12,8 @@
   "autodoc.word.max_lvl": "Maximum Level",
   "autodoc.word.dmg": "Damage",
   "autodoc.word.dmg_multi": "Damage Multiplier",
+  "autodoc.word.id": "Identifier",
+  "autodoc.word.description": "Description",
   "autodoc.word.identifier": "Identifier",
   "autodoc.word.name": "Name",
   "autodoc.word.stats": "Stats",

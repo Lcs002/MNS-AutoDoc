@@ -2,10 +2,7 @@ package io.github.lcs002.config;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import io.github.lcs002.config.configs.MainGeneratorConfig;
-import io.github.lcs002.config.configs.SpecificMobsGeneratorConfig;
-import io.github.lcs002.config.configs.SupportGemGeneratorConfig;
-import io.github.lcs002.config.configs.UniqueGearsGeneratorConfig;
+import io.github.lcs002.config.configs.*;
 import io.github.lcs002.localization.Localization;
 
 public class Config {
@@ -23,6 +20,8 @@ public class Config {
     public UniqueGearsGeneratorConfig uniqueGearsGeneratorConfig;
     @JsonProperty("support_gems_generator_config")
     public SupportGemGeneratorConfig supportGemsGeneratorConfig;
+    @JsonProperty("stat_info_generator_config")
+    public StatInfoGeneratorConfig statInfoGeneratorConfig;
 
     public Config() {}
 
@@ -37,6 +36,7 @@ public class Config {
         config.specificMobsGeneratorConfig.globalConfig = config;
         config.uniqueGearsGeneratorConfig.globalConfig = config;
         config.supportGemsGeneratorConfig.globalConfig = config;
+        config.statInfoGeneratorConfig.globalConfig = config;
         return config;
     }
 
@@ -51,6 +51,7 @@ public class Config {
         config.specificMobsGeneratorConfig = new SpecificMobsGeneratorConfig().createDefault(config);
         config.uniqueGearsGeneratorConfig = new UniqueGearsGeneratorConfig().createDefault(config);
         config.supportGemsGeneratorConfig = new SupportGemGeneratorConfig().createDefault(config);
+        config.statInfoGeneratorConfig = new StatInfoGeneratorConfig().createDefault(config);
         return config;
     }
 }

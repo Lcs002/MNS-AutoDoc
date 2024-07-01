@@ -2,6 +2,7 @@ package io.github.lcs002.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.github.lcs002.utils.FileUtils;
+import io.github.lcs002.utils.Printer;
 import org.reflections.Reflections;
 
 import java.io.File;
@@ -28,12 +29,12 @@ public class ConfigController {
         File configFile = new File(userDir + "/" + CONFIG_FILE);
 
         if (configFile.exists() && !configFile.isDirectory()) {
-            System.out.println("Config file found.");
+            Printer.printDebug("Config file found.");
             String serializedConfig = FileUtils.readConfigFile(configFile.getPath());
             config = Config.fromJson(serializedConfig);
         }
         else {
-            System.out.println("Config file not found, creating a new one.");
+            Printer.printDebug("Config file not found, creating a new one.");
             config = Config.createDefaultConfig();
             String serializedConfig = serializeConfig(config);
             FileUtils.createFile(configFile.getPath());

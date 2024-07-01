@@ -1,8 +1,10 @@
 package io.github.lcs002.generator;
 
+import io.github.lcs002.utils.Printer;
 import io.github.lcs002.utils.MarkdownUtils;
 import io.github.lcs002.config.GeneratorConfig;
 import io.github.lcs002.utils.FileUtils;
+import org.jline.jansi.Ansi;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,7 +17,7 @@ public class Generator<T extends GeneratorConfig> {
     }
 
     public final void generate() {
-        System.out.println("Generating " + generatorConfig.fileName);
+        Printer.print(Ansi.ansi().fgBrightBlue().a("Generating " + generatorConfig.fileName).reset().toString());
         StringBuilder content = new StringBuilder();
         content.append(createTabs());
         content.append(MarkdownUtils.header(1, generatorConfig.title));
@@ -31,6 +33,7 @@ public class Generator<T extends GeneratorConfig> {
         tabs.add(MarkdownUtils.link(generatorConfig.globalConfig.specificMobsGeneratorConfig.title, generatorConfig.globalConfig.specificMobsGeneratorConfig.fileName));
         tabs.add(MarkdownUtils.link(generatorConfig.globalConfig.uniqueGearsGeneratorConfig.title, generatorConfig.globalConfig.uniqueGearsGeneratorConfig.fileName));
         tabs.add(MarkdownUtils.link(generatorConfig.globalConfig.supportGemsGeneratorConfig.title, generatorConfig.globalConfig.supportGemsGeneratorConfig.fileName));
+        tabs.add(MarkdownUtils.link(generatorConfig.globalConfig.statInfoGeneratorConfig.title, generatorConfig.globalConfig.statInfoGeneratorConfig.fileName));
         return MarkdownUtils.table(tabs.toArray(new String[0]), new String[][]{});
     }
 
