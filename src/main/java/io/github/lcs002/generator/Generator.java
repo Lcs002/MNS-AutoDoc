@@ -30,6 +30,7 @@ public class Generator<T extends GeneratorConfig> {
         tabs.add(MarkdownUtils.link(generatorConfig.globalConfig.mainGeneratorConfig.title, generatorConfig.globalConfig.mainGeneratorConfig.fileName));
         tabs.add(MarkdownUtils.link(generatorConfig.globalConfig.specificMobsGeneratorConfig.title, generatorConfig.globalConfig.specificMobsGeneratorConfig.fileName));
         tabs.add(MarkdownUtils.link(generatorConfig.globalConfig.uniqueGearsGeneratorConfig.title, generatorConfig.globalConfig.uniqueGearsGeneratorConfig.fileName));
+        tabs.add(MarkdownUtils.link(generatorConfig.globalConfig.supportGemsGeneratorConfig.title, generatorConfig.globalConfig.supportGemsGeneratorConfig.fileName));
         return MarkdownUtils.table(tabs.toArray(new String[0]), new String[][]{});
     }
 

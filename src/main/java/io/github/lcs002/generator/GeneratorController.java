@@ -1,11 +1,19 @@
 package io.github.lcs002.generator;
 
 import io.github.lcs002.config.ConfigController;
-import io.github.lcs002.data.providers.SpecificMobProvider;
-import io.github.lcs002.data.providers.UniqueGearProvider;
-import io.github.lcs002.data.views.EntityConfigsTableView;
-import io.github.lcs002.data.views.StatModsListedView;
-import io.github.lcs002.data.views.UniqueGearsTableView;
+import io.github.lcs002.config.configs.SpecificMobsGeneratorConfig;
+import io.github.lcs002.config.configs.SupportGemGeneratorConfig;
+import io.github.lcs002.config.configs.UniqueGearsGeneratorConfig;
+import io.github.lcs002.data.model.Entity;
+import io.github.lcs002.data.model.SupportGem;
+import io.github.lcs002.data.model.UniqueGear;
+import io.github.lcs002.data.providers.concrete.SpecificMobFromJsonProvider;
+import io.github.lcs002.data.providers.concrete.SupportGemFromJsonProvider;
+import io.github.lcs002.data.providers.concrete.UniqueGearFromJsonProvider;
+import io.github.lcs002.data.view.concrete.EntityConfigsTableView;
+import io.github.lcs002.data.view.concrete.StatModsListedView;
+import io.github.lcs002.data.view.concrete.SupportGemsTableView;
+import io.github.lcs002.data.view.concrete.UniqueGearsTableView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,23 +34,31 @@ public class GeneratorController {
 
     public void init() {
         generators = new ArrayList<>();
-        System.out.println("Configgg " + ConfigController.getConfig());
         generators.add(new Generator<>(ConfigController.getConfig().mainGeneratorConfig));
-        generators.add(new ResourceGenerator<>(
+        generators.add(new ResourceGenerator<SpecificMobsGeneratorConfig, Entity>(
                 ConfigController.getConfig().specificMobsGeneratorConfig,
-                new SpecificMobProvider(),
+                new SpecificMobFromJsonProvider(ConfigController.getConfig().dataDir),
                 new EntityConfigsTableView(
-                        ConfigController.getConfig().specificMobsGeneratorConfig.tableContent,
-                        new StatModsListedView(ConfigController.getConfig().specificMobsGeneratorConfig.statContent)
+                        ConfigController.getConfig().specificMobsGeneratorConfig.attributes,
+                        new StatModsListedView(ConfigController.getConfig().specificMobsGeneratorConfig.stats)
                 )
         ));
-        generators.add(new ResourceGenerator<>(
+        generators.add(new ResourceGenerator<UniqueGearsGeneratorConfig, UniqueGear>(
                 ConfigController.getConfig().uniqueGearsGeneratorConfig,
-                new UniqueGearProvider(),
+                new UniqueGearFromJsonProvider(ConfigController.getConfig().dataDir),
                 new UniqueGearsTableView(
-                        ConfigController.getConfig().uniqueGearsGeneratorConfig.tableContent,
-                        new StatModsListedView(ConfigController.getConfig().uniqueGearsGeneratorConfig.statContent)
+                        ConfigController.getConfig().uniqueGearsGeneratorConfig.attributes,
+                        new StatModsListedView(ConfigController.getConfig().uniqueGearsGeneratorConfig.stats)
                 )
+        ));
+        generators.add(new ResourceGenerator<SupportGemGeneratorConfig, SupportGem>(
+                ConfigController.getConfig().supportGemsGeneratorConfig,
+                new SupportGemFromJsonProvider(ConfigController.getConfig().dataDir),
+                new SupportGemsTableView(
+                        ConfigController.getConfig().supportGemsGeneratorConfig.attributes,
+                        new StatModsListedView(ConfigController.getConfig().supportGemsGeneratorConfig.stats)
+                )
+
         ));
     }
 

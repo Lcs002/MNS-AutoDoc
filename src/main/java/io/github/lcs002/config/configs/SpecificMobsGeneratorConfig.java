@@ -3,23 +3,23 @@ package io.github.lcs002.config.configs;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.github.lcs002.config.Config;
 import io.github.lcs002.config.ResourceGeneratorConfig;
-import io.github.lcs002.data.model.EntityConfig;
+import io.github.lcs002.data.model.Entity;
 import io.github.lcs002.data.model.components.StatMod;
 
-public class SpecificMobsGeneratorConfig extends ResourceGeneratorConfig<EntityConfig> {
-    @JsonProperty("table_content")
-    public String[] tableContent;
-    @JsonProperty("stat_content")
-    public String[] statContent;
+public class SpecificMobsGeneratorConfig extends ResourceGeneratorConfig<Entity> {
+    @JsonProperty("attributes")
+    public String[] attributes;
+    @JsonProperty("stats")
+    public String[] stats;
 
     public SpecificMobsGeneratorConfig() {}
 
     public SpecificMobsGeneratorConfig(String fileName, String title, String description,
-                                       Config config, String[] statContent, String[] tableContent)
+                                       Config config, String[] stats, String[] attributes)
     {
         super(fileName, title, description, config);
-        this.tableContent = tableContent;
-        this.statContent = statContent;
+        this.attributes = attributes;
+        this.stats = stats;
     }
 
     @Override
@@ -33,9 +33,9 @@ public class SpecificMobsGeneratorConfig extends ResourceGeneratorConfig<EntityC
                         StatMod.Attributes.STAT, StatMod.Attributes.MIN,
                         StatMod.Attributes.MAX, StatMod.Attributes.TYPE,
                 }, new String[] {
-                        EntityConfig.Attributes.IDENTIFIER, EntityConfig.Attributes.HP_MULTI,
-                        EntityConfig.Attributes.DMG_MULTI, EntityConfig.Attributes.EXP_MULTI,
-                        EntityConfig.Attributes.LOOT_MULTI, EntityConfig.Attributes.STATS
+                        Entity.Attributes.IDENTIFIER, Entity.Attributes.HP_MULTI,
+                        Entity.Attributes.DMG_MULTI, Entity.Attributes.EXP_MULTI,
+                        Entity.Attributes.LOOT_MULTI, Entity.Attributes.STATS
                 }
         );
     }

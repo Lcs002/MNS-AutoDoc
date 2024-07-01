@@ -21,5 +21,8 @@
   "autodoc.word.loot_table_multi": "Loot Table Multiplier",
   "autodoc.word.unique_stats": "Unique Stats",
   "autodoc.word.rarity": "Rarity",
-  "autodoc.word.base_gear": "Base Gear"
+  "autodoc.word.base_gear": "Base Gear",
+  "autodoc.play_style.str": "Strength Play Style",
+  "autodoc.play_style.dex": "Dexterity Play Style",
+  "autodoc.play_style.int": "Intelligence Play Style"
 }

@@ -3,6 +3,9 @@ package io.github.lcs002.data.model.components;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonRootName;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import io.github.lcs002.data.JsonData;
 import io.github.lcs002.data.LocatableData;
 import io.github.lcs002.localization.AttributeLocalizer;
 import io.github.lcs002.localization.Localization;
@@ -12,7 +15,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @JsonRootName("stat")
-public class StatMod implements LocatableData {
+public class StatMod implements JsonData<StatMod>, LocatableData<StatMod> {
     @JsonIgnore
     private static final Map<String, AttributeLocalizer> attributes = new HashMap<>();
 
@@ -60,6 +63,21 @@ public class StatMod implements LocatableData {
             case Attributes.TYPE -> value = type;
         }
         return attributes.get(attribute).parseValue(value, localization);
+    }
+
+    @Override
+    public String[] getAttributes() {
+        return attributes.keySet().toArray(new String[0]);
+    }
+
+    @Override
+    public String toJson() throws JsonProcessingException {
+        return new ObjectMapper().writerWithDefaultPrettyPrinter().writeValueAsString(this);
+    }
+
+    @Override
+    public StatMod fromJson(String json) throws JsonProcessingException {
+        return new ObjectMapper().readValue(json, StatMod.class);
     }
 
     public static class Attributes {

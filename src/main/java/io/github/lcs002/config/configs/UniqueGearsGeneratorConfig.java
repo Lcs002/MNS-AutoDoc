@@ -2,24 +2,23 @@ package io.github.lcs002.config.configs;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.github.lcs002.config.Config;
-import io.github.lcs002.config.GeneratorConfig;
 import io.github.lcs002.config.ResourceGeneratorConfig;
 import io.github.lcs002.data.model.components.StatMod;
 import io.github.lcs002.data.model.UniqueGear;
 
 public class UniqueGearsGeneratorConfig extends ResourceGeneratorConfig<UniqueGear> {
-    @JsonProperty("table_content")
-    public String[] tableContent;
-    @JsonProperty("stat_content")
-    public String[] statContent;
+    @JsonProperty("attributes")
+    public String[] attributes;
+    @JsonProperty("stats")
+    public String[] stats;
 
     public UniqueGearsGeneratorConfig() {}
 
     public UniqueGearsGeneratorConfig(String fileName, String title, String description, Config config,
-                                      String[] tableContent, String[] statContent) {
+                                      String[] attributes, String[] stats) {
         super(fileName, title, description, config);
-        this.tableContent = tableContent;
-        this.statContent = statContent;
+        this.attributes = attributes;
+        this.stats = stats;
     }
 
     @Override

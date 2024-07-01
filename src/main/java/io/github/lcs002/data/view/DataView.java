@@ -1,4 +1,4 @@
-package io.github.lcs002.data.views;
+package io.github.lcs002.data.view;
 
 import io.github.lcs002.localization.Localization;
 

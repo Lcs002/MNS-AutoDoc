@@ -1,9 +1,8 @@
 package io.github.lcs002.generator;
 
-import io.github.lcs002.config.GeneratorConfig;
 import io.github.lcs002.config.ResourceGeneratorConfig;
 import io.github.lcs002.data.providers.DataProvider;
-import io.github.lcs002.data.views.DataView;
+import io.github.lcs002.data.view.DataView;
 
 public class ResourceGenerator<T extends ResourceGeneratorConfig<K>, K> extends Generator<T>{
     protected DataProvider<K> dataProvider;

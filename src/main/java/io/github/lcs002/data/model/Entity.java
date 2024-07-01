@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import io.github.lcs002.data.Data;
+import io.github.lcs002.data.JsonData;
 import io.github.lcs002.data.LocatableData;
 import io.github.lcs002.data.model.components.SpecialMobStats;
 import io.github.lcs002.localization.AttributeLocalizer;
@@ -12,11 +12,10 @@ import io.github.lcs002.localization.Localization;
 import io.github.lcs002.localization.LocalizationGroup;
 
 import java.lang.reflect.Field;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-public class EntityConfig implements Data, LocatableData {
+public class Entity implements JsonData<Entity>, LocatableData<Entity> {
     @JsonIgnore
     private static final Map<String, AttributeLocalizer> attributes = new HashMap<>();
 
@@ -57,8 +56,14 @@ public class EntityConfig implements Data, LocatableData {
     @JsonProperty(Attributes.STATS)
     public SpecialMobStats stats;
 
-    public static EntityConfig fromJson(String json) throws JsonProcessingException {
-        return new ObjectMapper().readValue(json, EntityConfig.class);
+    @Override
+    public String toJson() throws JsonProcessingException {
+        return new ObjectMapper().writerWithDefaultPrettyPrinter().writeValueAsString(this);
+    }
+
+    @Override
+    public Entity fromJson(String json) throws JsonProcessingException {
+        return new ObjectMapper().readValue(json, Entity.class);
     }
 
     @Override
@@ -73,7 +78,7 @@ public class EntityConfig implements Data, LocatableData {
     public Object localizeValue(String attribute, Localization localization) {
         Object value;
 
-        Class<? extends EntityConfig> clazz = this.getClass();
+        Class<? extends Entity> clazz = this.getClass();
         try {
             Field field = clazz.getField(attribute);
             value = field.get(this);

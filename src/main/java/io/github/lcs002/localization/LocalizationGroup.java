@@ -8,6 +8,12 @@ public enum LocalizationGroup {
             "item.mmorpg.currency",
             "item.mmorpg.stat_soul.family"
     )),
+    PLAY_STYLES(List.of(
+            "mmorpg.play_style"
+    )),
+    SUPPORT_GEMS(List.of(
+            "mmorpg.support_gem"
+    )),
     GEAR_SLOTS(List.of(
             "mmorpg.gear_slot"
     )),

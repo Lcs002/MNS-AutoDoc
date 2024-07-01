@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.github.lcs002.data.Data;
+import io.github.lcs002.data.JsonData;
 import io.github.lcs002.data.LocatableData;
 import io.github.lcs002.data.model.components.StatMod;
 import io.github.lcs002.localization.AttributeLocalizer;
@@ -15,7 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-public class UniqueGear implements Data, LocatableData {
+public class UniqueGear implements JsonData<UniqueGear>, LocatableData<UniqueGear> {
     @JsonIgnore
     private static final Map<String, AttributeLocalizer> attributes = Map.of(
             Attributes.BASE_GEAR, new AttributeLocalizer(Attributes.BASE_GEAR, LocalizationGroup.WORDS, LocalizationGroup.GEAR_TYPES),
@@ -71,7 +72,13 @@ public class UniqueGear implements Data, LocatableData {
         this.runable = runable;
     }
 
-    public static UniqueGear fromJson(String json) throws JsonProcessingException {
+    @Override
+    public String toJson() throws JsonProcessingException {
+        return new ObjectMapper().writerWithDefaultPrettyPrinter().writeValueAsString(this);
+    }
+
+    @Override
+    public UniqueGear fromJson(String json) throws JsonProcessingException {
         return new ObjectMapper().readValue(json, UniqueGear.class);
     }
 

@@ -1,6 +1,7 @@
-package io.github.lcs002.data.views;
+package io.github.lcs002.data.view.concrete;
 
 import io.github.lcs002.data.model.components.StatMod;
+import io.github.lcs002.data.view.DataView;
 import io.github.lcs002.localization.Localization;
 import io.github.lcs002.utils.MarkdownUtils;
 
